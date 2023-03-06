@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - 3000:3000
+      - ${APP_PORT:-3000}:${APP_PORT:-3000}
     working_dir: /app-backend
     depends_on:
       db:
@@ -24,11 +24,13 @@ services:
       test: ["CMD", "lsof", "-t", "-i:3000"] # Caso utilize outra porta interna para o back, altere ela aqui também
       timeout: 10s
       retries: 5
+    volumes:
+      - ./:/app-backend    
   db:
     image: mysql:8.0.21
     container_name: db
     ports:
-      - 3306:3306
+      - ${DB_PORT:-3306}:${DB_PORT:-3306}
     environment:
       - MYSQL_ROOT_PASSWORD=${DB_PASS:-123456}
     restart: 'always'
