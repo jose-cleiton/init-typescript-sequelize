@@ -10,7 +10,7 @@ class App {
 
   constructor() {
     this.app.get('/', (req: Request, res: Response) => {
-      res.sendStatus(StatusCodes.OK);
+      res.status(StatusCodes.OK).json({ message: 'Hello World!' });
     });
 
     this.app.get('/users/:id', (req: Request, res: Response, next: any) => {
