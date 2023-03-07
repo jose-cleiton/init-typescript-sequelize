@@ -1,12 +1,13 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { HttpException } from './errors/http-exception.error';
+import { ExpressAsyncErrorMiddleware } from './middlewares/express-async-errors.middleware';
 
 class App {
   public app = express();
   public port = process.env.API_PORT || 3000;
 
-  constructor(customError: any) {
+  constructor() {
     // Adicionar os middlewares de body-parser e cors
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: false }));
@@ -26,12 +27,7 @@ class App {
     });
 
     // middleware errorHandler para lidar com erros personalizados
-    this.app.use((err: HttpException, req: Request, res: Response, next: NextFunction) => {
-      const status = err.status || StatusCodes.INTERNAL_SERVER_ERROR;
-      const message = err.message || 'Internal Server Error';
-
-      res.status(status).json({ message });
-    });
+    this.app.use(ExpressAsyncErrorMiddleware.handle);
 
     this.app.listen(this.port, () => {
       console.clear();
