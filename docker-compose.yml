@@ -18,14 +18,14 @@ services:
       # Dica: Relembre aqui da comunicação interna entre containers
       - DB_USER=${DB_USER:-root}
       - DB_PASS=${DB_PASS:-123456}
-      - DB_HOST=${DB_HOST:-db}
+      - DB_HOST=db
       - DB_PORT=${DB_PORT:-3306}
     healthcheck:
       test: ["CMD", "lsof", "-t", "-i:3000"] # Caso utilize outra porta interna para o back, altere ela aqui também
       timeout: 10s
       retries: 5
     volumes:
-      - ./:/app-backend    
+      - ./:/app-backend    # corrigir ta espelhando todo hd
   db:
     image: mysql:8.0.21
     container_name: db
@@ -35,7 +35,7 @@ services:
       - MYSQL_ROOT_PASSWORD=${DB_PASS:-123456}
     restart: 'always'
     healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"] # Deve aguardar o banco ficar operacional
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"] 
       timeout: 10s
       retries: 5
     cap_add:
