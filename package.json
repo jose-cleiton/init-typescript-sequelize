@@ -7,7 +7,7 @@
     "start": "node dist/src/index.js",
     "dev": "ts-node-dev --respawn --transpileOnly src/index.ts",
     "build": "tsc",
-    "db:reset": ""
+    "db:reset": "npx -y tsc sequelize-cli db:drop && npx sequelize-cli db:create"
   },
   "keywords": [],
   "author": "",
